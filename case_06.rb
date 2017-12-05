@@ -339,3 +339,11 @@ bodies = Hash.new do |hash, key|
 	body.type = "planet"
 	hash[key] = body
 end
+
+foods = Hash.new { |hash, key| hash[key] = [] }
+letters = ['a', 'c', 'a', 'b', 'c', 'a']
+counts = Hash.new(0)
+letters.each do |letter|
+	counts[letter] += 1
+end
+
