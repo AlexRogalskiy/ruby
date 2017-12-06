@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>Movie: <%= @movie.title %></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta charset="UTF-8" />
+        <meta name="description" content="REST API" />
+        <meta name="keywords" content="REST,API" />
+        <meta name="author" content="Alexander R." />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="shortcut icon" sizes="16x16" type="image/x-icon" href="/v1/images/favicon_16x16.ico" >
+        <link rel="shortcut icon" sizes="24x24" type="image/x-icon" href="/v1/images/favicon_24x24.ico" >
+        <link rel="shortcut icon" sizes="32x32" type="image/x-icon" href="/v1/images/favicon_32x32.ico" >
+        <link rel="shortcut icon" sizes="64x64" type="image/x-icon" href="/v1/images/favicon_64x64.ico" >
+
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+        <link rel="stylesheet" type="text/css" href="<%= url('/styles2.css') %>" />
+    </head>
+<!--  header -->
+
+<body>
+    <div class="container">
+        <div class="dark-line">
+            <h1>| <%= @movie.title %></h1>
+        </div>
+
+        <div class="row">
+            <div>
+                <ul>
+                    <li>
+                        <h3>Title:</h3>
+                        <p><%= @movie.title %></p>
+                    </li>
+                   
+                    <li>
+                        <h3>Director:</h3>
+                        <p><%= @movie.title %></p>
+                    </li>
+             
+                    <li>
+                        <h3>Year:</h3>
+                        <p><%= @movie.year %></p>
+                    </li>
+             
+                    <li>
+                        <h3>Rate:</h3>
+                        <p><%= @movie.rate %></p>
+                    </li>
+
+                    <li>
+                        <h3>Comment:</h3>
+                        <p><%= @movie.comment %></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <a href="/movies">Back to main</a>
+    </div>
+</body>
+
+<!--  footer -->
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>New movie</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta charset="UTF-8" />
+        <meta name="description" content="REST API" />
+        <meta name="keywords" content="REST,API" />
+        <meta name="author" content="Alexander R." />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="shortcut icon" sizes="16x16" type="image/x-icon" href="/v1/images/favicon_16x16.ico" >
+        <link rel="shortcut icon" sizes="24x24" type="image/x-icon" href="/v1/images/favicon_24x24.ico" >
+        <link rel="shortcut icon" sizes="32x32" type="image/x-icon" href="/v1/images/favicon_32x32.ico" >
+        <link rel="shortcut icon" sizes="64x64" type="image/x-icon" href="/v1/images/favicon_64x64.ico" >
+
+        <link rel="stylesheet" type="text/css" href="<%= url('/styles.css') %>" />
+    </head>
+<!--  header -->
+
+<body>
+    <div class="container">
+        <div class="dark-line">
+            <h1>| Add new movie</h1>
+        </div>
+
+        <div class="row">
+        	<form method="post" action="/movies/create" role="form" class="col-md-9 go-right">
+
+                <div class="form-group">
+                    <input id="title" name="title" type="text" class="form-control" required autocomplete="off"/>
+                    <label for="title"><span>Title</span></label>
+                </div>
+
+                <div class="form-group">
+                    <input id="director" name="director" type="text" class="form-control" required autocomplete="off"/>
+                    <label for="director"><span>Director</span></label>
+                </div>
+
+                <div class="form-group">
+                    <input id="year" name="year" type="text" class="form-control" required autocomplete="off"/>
+                    <label for="year"><span>Year</span></label>
+                </div>
+
+                <div class="form-group">
+                    <input id="rate" name="rate" type="text" class="form-control" required autocomplete="off"/>
+                    <label for="rate"><span>Rate</span></label>
+                </div>
+
+                <div class="form-group">
+                    <textarea id="comment" name="comment" class="form-control" required autocomplete="off"></textarea>
+                    <label for="comment"><span>Comment</span></label>
+                    <div class="textarea-footer">
+                        <p class="comment">Please, fill up all the fields</p>
+                    </div>
+                </div>
+
+                <input id="submit" name="submit" type="submit" />
+            </form>
+        </div>
+        <a href="/movies">Back to main</a>
+    </div>
+</body>
+
+<!--  footer -->
+</html>

@@ -1,0 +1,52 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+* {margin: 0; padding: 0;}
+
+h1, .h1, h2, .h2, h3, .h3 {
+ margin-top: 0px;
+ margin-bottom: 0px;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+div {
+  margin: 20px;
+}
+
+.dark-line {
+  margin: 0px;
+}
+ 
+ul {
+  list-style-type: none;
+  width: auto;
+}
+ 
+h3 {
+  font-family: 'Ubuntu', sans-serif;
+  display: block;
+  padding: 15px 0px 15px 0px;
+  border: none;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: bold;
+  direction: ltr;
+  resize: none;
+}
+ 
+li p {
+  font-size: 16px;
+  font-weight: 300;
+}
+ 
+li {
+  padding: 0px 10px;
+  overflow: auto;
+}
+ 
+li:hover {
+  background: #eee;
+  cursor: pointer;
+}

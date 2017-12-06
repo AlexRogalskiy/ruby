@@ -1,0 +1,198 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600);
+
+html {
+  font-family: 'Lora', sans-serif;
+  width: 100%;
+}
+
+body {
+  margin: 10 auto 10 auto;
+  width: 100%;
+  max-width: 600px;
+}
+
+h1 {
+  font-size: 28px;
+  margin: 10 auto 10 auto;
+}
+
+input,
+span,
+label,
+textarea {
+    font-family: 'Ubuntu', sans-serif;
+    display: block;
+    padding: 15px 0px 15px 0px;
+    border: none;
+    font-size: 22px;
+    direction: ltr;
+    resize: none;
+}
+
+a {
+    display: block;
+    padding: 15px 0px 15px 0px;
+}
+
+textarea {
+    padding: 0px 0px 10px 0px;
+}
+
+textarea:focus,
+input:focus {
+  outline: 200px;
+}
+
+input.form-control,
+textarea.form-control {
+  font-size: 22px;
+  font-weight: 300;
+  border-radius: 4px;
+  margin: 0;
+  border: none;
+  width: 100%;
+  background: rgba(0, 0, 0, 0);
+  transition: padding-top 0.2s ease, margin-top 0.2s ease;
+  overflow-x: hidden;
+}
+
+input.form-control + label,
+textarea.form-control + label {
+  display: block;
+  position: relative;
+  white-space: nowrap;
+  padding: 0;
+  margin: 0;
+  width: auto;
+  border-top: 1px solid red;
+  -webkit-transition: width 0.4s ease;
+  transition: width 0.4s ease;
+  height: 0px;
+}
+
+input.form-control:focus + label,
+textarea.form-control:focus + label {
+  width: auto;
+}
+
+input.form-control:focus,
+input.form-control:valid {
+  padding-top: 55px;
+}
+
+textarea.form-control:valid,
+textarea.form-control:focus {
+  margin-top: 75px;
+}
+
+input.form-control:focus + label > span,
+input.form-control:valid + label > span {
+  top: -100px;
+  font-size: 18px;
+  color: #333;
+  font-weight: bold;
+  font-style: italic;
+}
+
+textarea.form-control:focus + label > span,
+textarea.form-control:valid + label > span {
+  top: -140px;
+  font-size: 18px;
+  color: #333;
+  font-weight: bold;
+  font-style: italic;
+}
+
+input.form-control:valid + label,
+textarea.form-control:valid + label {
+  border-color: green;
+}
+
+input.form-control:invalid,
+textarea.form-control:invalid {
+  box-shadow: none;
+}
+
+input.form-control + label > span,
+textarea.form-control + label > span {
+  font-weight: 300;
+  margin: 0;
+  position: absolute;
+  color: #8F8F8F;
+  font-size: 24px;
+  top: -66px;
+  left: 0px;
+  z-index: -1;
+  -webkit-transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+  transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+}
+
+input[type="submit"] {
+    -webkit-transition: opacity 0.2s ease, background 0.2s ease;
+    transition: opacity 0.2s ease, background 0.2s ease;
+    display: block;
+    font-size: 18px;
+    margin: 10px 0 0 0;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px; 
+    -moz-border-radius: 5px; 
+    -webkit-border-radius: 5px;
+    background-color: #FFFFFF; /* White */
+    border: 1px solid #4CAF50; /* Green */
+}
+
+input[type="submit"]:hover {
+    background-color: #4CAF50; /* Green */
+    border: 1px solid #FFFFFF; /* White */
+}
+
+input[type="submit"]:active {
+}
+
+input.form-control:valid ~ input[type="submit"],
+textarea.form-control:valid ~ input[type="submit"] {
+  -webkit-animation: appear 1s forwards;
+  animation: appear 1s forwards;
+}
+
+input.form-control:invalid ~ input[type="submit"],
+textarea.form-control:invalid ~ input[type="submit"] {
+  display: none;
+}
+
+input[type="submit"].disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.textarea-footer {
+    width: auto;
+    height: auto;
+    background-color: red; 
+    color: #ffffff;
+    height: auto; 
+    z-index: 1; 
+    line-height: 30px;
+    position: relative;
+    border-radius: 5px; 
+    -moz-border-radius: 5px; 
+    -webkit-border-radius: 5px;
+}
+
+.comment {
+    margin-left: 10px;
+    font-family: calibri, arial, tahoma;
+}
+
+@-webkit-keyframes appear {
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes appear {
+  100% {
+    opacity: 1;
+  }
+}

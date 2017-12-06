@@ -163,3 +163,74 @@ splitter.to_a
 
 "abcd".insert(-1, 'X')
 "hello".index(/[aeiou]/, -3)
+
+require 'date'
+today = Date.today
+puts "#{today.year} - #{today.month} - #{today.day}"
+
+
+class SmallOven
+
+	attr_accessor :contents
+
+	def turn_on
+		puts "Turning oven on."
+		@state = "on"
+	end
+
+	def turn_off
+		puts "Turning oven off."
+		@state = "off"
+	end
+
+	def bake
+		unless @state == "on"
+			raise OvenOffError, "ERROR: oven is turned off"
+		end
+		if @contents == nil
+			raise OvenEmptyError, "ERROR: oven is empty"
+		end
+		"golden-brown #{contents}"
+	end
+end
+
+class OvenOffError < StandardError
+end
+class OvenEmptyError < StandardError
+end
+dinner = ['turkey', nil, 'pie']
+oven = SmallOven.new
+oven.turn_on
+dinner.each do |item|
+	begin
+		oven.contents = item
+		puts "Servicing #{oven.bake}"
+	rescue OvenEmptyError => error
+		puts "OvenEmptyError: #{error.message}"
+	rescue OvenOffError => error
+		puts "OvenOffError: #{error.message}"
+		oven.turn_on
+		retry
+	ensure
+		oven.turn_off
+	end
+end
+
+require 'minitest/autorun'
+class TestSetup < Minitest::Test
+	def setup
+		@oven = SmallOven.new
+		@oven.turn_on
+	end
+	def teardown
+		@oven.turn_off
+	end
+	def test_bake
+		@oven.contents = 'turkey'
+		assert_equal('golden-brown turkey', @oven.bake)
+	end
+	def test_empty_oven
+		@oven.contents = nil
+		assert_raises(OvenEmptyError) { @oven.bake }
+	end
+end
