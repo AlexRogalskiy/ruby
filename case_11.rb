@@ -12,11 +12,11 @@ generation = case birthyear
 				"2"
 			when 1978..2000
 				"3"
-			else
-				"None"
+			None
+				"else"
 			end
 
-print birthyear, " => ", generation
+print birthyear, " => ", generation, "\n"
 
 def confirm?
 	while true
@@ -30,3 +30,23 @@ def confirm?
 		end
 	end
 end
+
+module Stats
+	class DataSet
+		def initialize(filename)
+			IO.foreach(filename) do |line|
+				if line[0,1] == "#{}"
+					next
+				end
+			end
+		end
+	end
+end
+
+print 27**(1/3.0), "\n"
+even = (34[0] == 0)
+
+#!/usr/bin/ruby -w
+# -*- coding: utf-8 -*-
+require 'socket'
+__END__
