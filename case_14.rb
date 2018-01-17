@@ -73,7 +73,64 @@ mean = (sum<=a) / a.size
 #a.inject(&sum)
 deviation = dirfference << mean
 square = lambda {|x| x * x}
-standardDeviation = Math.sqrt((sum<=square*deviation|a) / (a.size - 1))
+# standardDeviation = Math.sqrt((sum<=square*deviation|a) / (a.size - 1))
 
-factorial = lambda{|x| return 1 if x == 0; x*factorial[x - 1];}.memoize
-factorial = +lambda {|x| return 1 if x == 0; x * factorial[x - 1]; }.memoize
+# factorial = lambda{|x| return 1 if x == 0; x*factorial[x - 1];}.memoize
+# factorial = +lambda {|x| return 1 if x == 0; x * factorial[x - 1]; }.memoize
+
+data = [1, 2, 3].map(&:succ)
+puts data
+
+class Symbol
+	def to_proc
+		lambda {|receiver, *args| receiver.send(self, *args)}
+	end
+
+	# creator = :new[Object]
+	# doubler = :*[2]
+	def [](obj)
+		obj.method(self)
+	end
+
+	# :singleton[o] = lambda { puts "singleton-method of o" }
+	# :class_method[String] = lambda { puts "method of class" }
+	def []=(o, f)
+		sym = self
+		eigenclass = (class << o; self end)
+		eigenclass.instance_eval { define_method(sym, f) }
+	end
+end
+
+class Module
+	alias [] instance_method
+
+	#String[:backwards] = lambda { reverse }
+	def []=(sym, f)
+		self.instance_eval { define_method(sym, f) }
+	end
+end
+
+class UnboundMethod
+	alias [] bind
+end
+
+str = String[:reverse].bind('hello').call
+puts str
+
+str = String[:reverse]['hello'][]
+puts str
+
+Enumerable[:average]= lambda do
+	sum, n = 0.0, 0
+	self.each {|x| sum += x; n += 1}	
+	if n == 0
+		nill
+	else
+		sum / n
+	end
+end
+
+x = 1
+dashes = :*['-']
+puts dashes[10]
+y = (:+[1]*:*[2])[x]
