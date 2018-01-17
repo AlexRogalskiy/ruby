@@ -403,6 +403,81 @@ def max(first, *rest, &block)
 	block.call(max)
 end
 
+a, b = [1, 2, 3], [4, 5]
+summa = Proc.new {|total, x| total + x}
+sum = a.inject(0, &summa)
+sum = b.inject(sum, &summa)
+
+words = ['and', 'but', 'car']
+uppercase = words.map &:upcase
+upper = words.map {|w| w.upcase}
+
+
+def makeproc(&p)
+	p
+end
+adder = makeproc {|x, y| x + y}
+sum = adder.call(2, 2)
+puts "\n\n#{sum}\n\n"
+
+def invoke(&b)
+	b.call
+end
+def invoke2
+	Proc.new.call
+end
+
+def compose(f, g)
+	-> (x) {f.call(g.call(x))}
+end
+succOfSquare = compose(->x {x + 1}, ->x {x * x})
+succOfSquare.call(4)
+
+succ = ->(x){x + 1}
+succ.call(2)
+
+data = [1, 2, 3, 4, 5, 6, 7]
+data.sort {|a, b| b - a}
+data2 = data.sort &->(a, b) {b - a}
+puts data2
+
+def lambdaBuilder(message)
+	p = lambda {puts message; return}
+end
+
+def mulitplier(n)
+	lambda {|data| data.collect {|x| x * n}}
+end
+doubler = mulitplier(2)
+puts "\n\n"
+puts doubler.call([1, 2, 3])
+
+
+def multipliers(*args)
+	x = nil
+	args.map {|x| lambda{|y| x * y}}
+end
+double, triple = multipliers(2, 3)
+puts double.call(2)
+puts triple.call(3)
+
+eval("n=3", doubler.binding)
+puts "\n\n"
+puts doubler.call([1, 2, 3])
+
+
+def square2(x)
+	x * x
+end
+puts (1..10).map(&method(:square2))
+
+
+unbound_plus = Integer.instance_method("+")
+plus_2 = unbound_plus.bind(2)
+puts "\n\n"
+puts plus_2.call(1)
+plus_3 = plus_2.unbind.bind(3)
+
 #!/usr/bin/ruby -w
 # -*- coding: utf-8 -*-
 require 'socket'
