@@ -26,6 +26,22 @@ class Point
 		@x, @y = x, y
 	end
 
+	def initialize(*coords)
+		@coords = coords
+	end
+
+	def initialize_copy(o)
+		@coords = @coords.dup
+	end
+
+	def marshal_dump
+		@coords.pack("w*")
+	end
+
+	def marshal_load(s)
+		@coords = s.unpack("w*")
+	end
+
 	def to_s
 		"(#@x, #@y)"
 	end
@@ -115,6 +131,15 @@ class Point
 		UNIT_Y = Point.new(0, 1)
 	end
 
+	def Point.cartesian(x, y)
+		new(x, y)
+	end
+
+	def Point.polar(r, theta)
+		new(r * Math.cos(theta), r * Math.sin(theta))
+	end
+
+	#private_class_method : new
 	protected
 	private
 end
@@ -130,7 +155,7 @@ end
 class Point3D < Point
 	attr_accessor :z
 
-	def initialize(x, y, z)
+	def initialize(x, y, z = nil)
 		super(x, y)
 		@z = z
 	end
@@ -183,4 +208,35 @@ w.send :utility_method
 w.public_send :x
 w.instance_eval { utility_method }
 w.instance_eval { @x }
+#----------------------------------------------------
+class Season
+	NAMES = %w{ SPRING SUMMER AUTOMN WINTER }
+	INSTANCES = []
+
+	def initialize(n)
+		@n = n
+	end
+
+	def to_s
+		NAMES[@n]
+	end
+
+	NAMES.each_with_index do |name, index|
+		instance = new(index)
+		INSTANCES[index] = instance
+		const_set name, instance
+	end
+
+	def _dump(limit)
+		@n.to_s
+	end
+
+	def self._load(s)
+		INSTANCES[Integer(s)]
+	end
+
+	private_class_method :new, :allocate
+	private :dup, :clone
+end
+
 #----------------------------------------------------
