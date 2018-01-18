@@ -124,6 +124,14 @@ class Point
 		q.add!(p)
 	end
 
+	def method_missing(name)
+		raise NoSuchMethodError, "Invalid method name #{name} for #{self.class}"
+	end
+
+	def const_missing(name)
+		raise NoSuchConstError, "Invalid const name #{name} for #{self.class}"
+	end
+
 	class << self
 		attr_accessor :n, :totalX, :totalY
 
@@ -260,4 +268,84 @@ class Season
 	private :dup, :clone
 end
 
+#----------------------------------------------------
+module Base64
+	DIGITD = 'ABCDEFGHIJKLMNOQRSTUVWXYZ' \
+			 'abcdefghijklmnoqrstuvwxyz' \
+			 '0123456789'
+
+	class Encoder
+		def encode(data)
+		end
+	end
+
+	class Decoder
+		def decode(text)
+		end
+	end
+
+	def self.helper
+	end
+
+	def method_
+	end
+
+	module_function :method_
+end
+
+data = nil
+text = Base64::Encoder.new.encode(data)
+data = Base64::Decoder.new.decode(text)
+#----------------------------------------------------
+module Iterable
+	include Enumerable
+	def each
+		loop { yield self.next }
+	end
+end
+
+countdown = Object.new
+def countdown.each
+	yield 3
+	yield 2
+	yield 1
+end
+countdown.extend(Enumerable)
+print countdown.sort
+print "\n\n"
+#----------------------------------------------------
+class Object
+	def eigenclass
+		class << self; self; end
+	end
+end
+#----------------------------------------------------
+module Kernel
+	A = B = C = D = E = F = "Kernel"
+end
+A = B = C = D = E = "Object"
+class Super
+	A = B = C = D = "Super"
+end
+module Included
+	A = B = C = "Included"
+end
+module Enclosing
+	A = B = "Enclosing"
+
+	class Local < Super
+		include Included
+
+		A = "Local"
+		#Enclosing::Local -> Enclosing -> Included -> Super -> Object -> Kernel
+		search = (Module.nesting + self.ancestors + Object.ancestors).uniq
+
+		puts A
+		puts B
+		puts C
+		puts D
+		puts E
+		puts F
+	end
+end
 #----------------------------------------------------
