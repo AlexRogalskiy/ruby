@@ -24,6 +24,7 @@ class Point
 
 	def initialize(x, y)
 		@x, @y = x, y
+		PointStats.instance.record(self)
 	end
 
 	def initialize(*coords)
@@ -43,7 +44,7 @@ class Point
 	end
 
 	def to_s
-		"(#@x, #@y)"
+		"(#@x, #@y) + #{PointStats.instance.report}"
 	end
 
 	def +(other)
@@ -172,6 +173,26 @@ p.each {|x| print x}
 
 p.all? {|x| x == 0}
 
+require 'singleton'
+class PointStats
+	include Singleton
+
+	def initialize
+		@n, @totalX, @totalY = 0, 0.0, 0.0
+	end
+
+	def record(point)
+		@n += 1
+		@totalX += point.x
+		@totalY += point.y
+	end
+
+	def report
+		puts "Number of points: #@n"
+		puts "Average coordinate X of Point: #{@totalX/@n}"
+		puts "Average coordinate Y of Point: #{@totalY/@n}"
+	end
+end
 #----------------------------------------------------
 #Struct.new("Point2", :x, :y)
 Point2 = Struct.new(:x, :y)
