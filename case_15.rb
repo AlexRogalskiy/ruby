@@ -5,6 +5,23 @@ class Point
 	attr_accessor :x, :y
 	#attr_reader :x, :y
 
+	@n = 0
+	@totalX = 0
+	@totalY = 0
+
+	def self.new(x, y)
+		@n += 1
+		@totalX += x
+		@totalY += y
+		super
+	end
+
+	def self.report
+		puts "Number of points: #@n"
+		puts "Average Point X: #{@totalX.to_f/@n}"
+		puts "Average Point Y: #{@totalY.to_f/@n}"
+	end
+
 	def initialize(x, y)
 		@x, @y = x, y
 	end
@@ -89,6 +106,38 @@ class Point
 		q = self.dup
 		q.add!(p)
 	end
+
+	class << self
+		attr_accessor :n, :totalX, :totalY
+
+		ORIGIN = Point.new(0, 0)
+		UNIT_X = Point.new(1, 0)
+		UNIT_Y = Point.new(0, 1)
+	end
+
+	protected
+	private
+end
+
+class << Point
+	def self.sum(*points)
+		x = y = 0
+		points.each {|p| x += p.x; y += p.y}
+		Point.new(x, y)
+	end
+end
+
+class Point3D < Point
+	attr_accessor :z
+
+	def initialize(x, y, z)
+		super(x, y)
+		@z = z
+	end
+
+	def to_s
+		"(#@x, #@y, #@z)"
+	end
 end
 
 p = Point.new(1, 2)
@@ -98,7 +147,7 @@ p.each {|x| print x}
 
 p.all? {|x| x == 0}
 
-#-------------------------
+#----------------------------------------------------
 #Struct.new("Point2", :x, :y)
 Point2 = Struct.new(:x, :y)
 class Point2
@@ -107,9 +156,31 @@ class Point2
 		Point2.new(-@x, -@y)
 	end
 end
+# class Point3D < Struct.new("Point2", :x, :y, :z)
+# end
 
 p = Point2.new(1, 2)
 p[:x] = 4
 p.each_pair {|x,y| print x, y}
+#----------------------------------------------------
+class Widget
+	def x
+		@x
+	end
+	public :x
 
+	def utility_method
+		nil
+	end
+	private :utility_method
+	
+	#private_class_method :new
+	#public_class_method :new
+end
 
+w = Widget.new
+w.send :utility_method
+w.public_send :x
+w.instance_eval { utility_method }
+w.instance_eval { @x }
+#----------------------------------------------------
