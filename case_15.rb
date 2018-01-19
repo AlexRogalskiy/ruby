@@ -589,8 +589,34 @@ class Module
 	end
 end
 #----------------------------------------------------
+class Module
+	def attributes(hash)
+		hash.each_pair do |symbol, default|
+			getter = symbol
+			setter = :"#{symbol}="
+			variable = :"@#{symbol}"
+			define_method getter do
+				if instance_variable_defined? variable
+					instance_variable_get variable
+				else
+					default
+				end
+			end
+		end
+	
+		define_method setter do |value|
+			instance_variable_set variable, value
+		end
+	end
 
+	def class_attrs(hash)
+		eigenclass = class << self; self; end
+		eigenclass.class_eval { attributes(hash) }
+	end
 
+	private :attributes, :class_attrs
+end
+#----------------------------------------------------
 
 
 
