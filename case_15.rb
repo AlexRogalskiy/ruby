@@ -1,3 +1,24 @@
+require 'singleton'
+class PointStats
+	include Singleton
+
+	def initialize
+		@n, @totalX, @totalY = 0, 0.0, 0.0
+	end
+
+	def record(point)
+		@n += 1
+		@totalX += point.x
+		@totalY += point.y
+	end
+
+	def report
+		puts "Number of points: #@n"
+		puts "Average coordinate X of Point: #{@totalX/@n}"
+		puts "Average coordinate Y of Point: #{@totalY/@n}"
+	end
+end
+
 class Point
 	include Enumerable
 	include Comparable
@@ -30,6 +51,8 @@ class Point
 	def initialize(*coords)
 		@coords = coords
 	end
+
+	ORIGIN = Point.new(0, 0)
 
 	def initialize_copy(o)
 		@coords = @coords.dup
@@ -124,11 +147,11 @@ class Point
 		q.add!(p)
 	end
 
-	def method_missing(name)
-		raise NoSuchMethodError, "Invalid method name #{name} for #{self.class}"
+	def method_missing(name, *args)
+		raise NoSuchMethodError, "Invalid method name #{name} for #{self.class} with args #{args}"
 	end
 
-	def const_missing(name)
+	def Symbol.const_missing(name)
 		raise NoSuchConstError, "Invalid const name #{name} for #{self.class}"
 	end
 
@@ -181,26 +204,6 @@ p.each {|x| print x}
 
 p.all? {|x| x == 0}
 
-require 'singleton'
-class PointStats
-	include Singleton
-
-	def initialize
-		@n, @totalX, @totalY = 0, 0.0, 0.0
-	end
-
-	def record(point)
-		@n += 1
-		@totalX += point.x
-		@totalY += point.y
-	end
-
-	def report
-		puts "Number of points: #@n"
-		puts "Average coordinate X of Point: #{@totalX/@n}"
-		puts "Average coordinate Y of Point: #{@totalY/@n}"
-	end
-end
 #----------------------------------------------------
 #Struct.new("Point2", :x, :y)
 Point2 = Struct.new(:x, :y)
@@ -349,3 +352,219 @@ module Enclosing
 	end
 end
 #----------------------------------------------------
+module M
+	class C
+		Module.nesting
+	end
+end
+module G
+	include M
+	def hi
+		"hello"
+	end
+end
+s = ""
+s.extend(G)
+#puts s.hi
+
+G.ancestors
+G.include?(M)
+G.included_modules
+#----------------------------------------------------
+MM = Module.new
+CC = Class.new
+DD = Class.new(CC) {
+	include MM
+}
+DD.to_s
+DD.name
+#----------------------------------------------------
+o = Point.new(1, 2)
+o.instance_eval("@x")
+String.class_eval {
+	def len
+		size
+	end
+}
+String.class_eval { alias len size }
+String.instance_eval { def empty; ""; end }
+#----------------------------------------------------
+global_variables
+x = 1
+local_variables
+p = Point.new(1, 2)
+Point::ORIGIN.instance_variables
+Point.class_variables
+Point.constants
+#----------------------------------------------------
+o = Object.new
+o.instance_variable_set(:@x, 0)
+o.instance_variable_get(:@x)
+o.instance_variable_defined?(:@x)
+
+Object.class_variable_set(:@@x, 1)
+Object.class_variable_get(:@@x)
+Object.class_variable_defined?(:@@x)
+
+Math.const_set(:EPI, Math::E*Math::PI)
+Math.const_get(:EPI, false)
+Math.const_defined?(:EPI, false)
+
+o.instance_eval { remove_instance_variable :@x }
+Object.class_eval { remove_class_variable(:@@x) }
+Math.send :remove_const, :EPI
+#----------------------------------------------------
+o = ""
+o.methods
+o.public_methods(false)
+o.protected_methods
+o.private_methods(false)
+def o.single; 1; end
+o.singleton_methods
+
+String.instance_methods == "".public_methods
+String.instance_methods(false) == "".public_methods(false)
+String.public_instance_methods == String.instance_methods
+String.protected_instance_methods
+String.private_instance_methods
+String.singleton_methods
+
+String.public_method_defined? :reverse
+String.protected_method_defined? :reverse
+String.private_method_defined? :initialize
+String.method_defined? :upcase!
+
+"".method(:reverse)
+"".public_method(:reverse)
+String.instance_method(:reverse)
+String.public_instance_method(:reverse)
+
+"".send :upcase
+Math.send(:sin, Math::PI/2)
+"".send :puts, "world"
+"".public_send :upcase
+#----------------------------------------------------
+def add_method(c, m, &b)
+	c.class_eval {
+		define_method(m, &b)
+	}
+end
+add_method(String, "greet") { "Hello, " + self }
+puts "world".greet
+
+def add_class_method(c, m, &b)
+	eigenclass = class << c; self; end
+	eigenclass.class_eval {
+		define_method(m, &b)
+	}
+end
+add_class_method(String, "greet") {|name| "Hello, " + name}
+puts String.greet("world")
+
+String.define_singleton_method(:greet) {|name| "Hello, " + name}
+
+def create_method_alias(c, m, prefix="original")
+	n = :"#{prefix}_#{m}"
+	c.class_eval {
+		alias_method n, m
+	}
+end
+create_method_alias(String, "reverse")
+puts "test".original_reverse
+#----------------------------------------------------
+class Hash
+	def method_missing(key, *args)
+		text = key.to_s
+		if text[-1, 1] == "="
+			self[text.chop.to_sym] = args[0]
+		else
+			self[key]
+		end
+	end
+end
+h = {}
+h.one = 1
+puts h.one
+#----------------------------------------------------
+String.class_eval { private :reverse }
+# "hello".reverse
+Math.private_class_method *Math.singleton_methods
+Math.public_class_method *Math.singleton_methods
+#----------------------------------------------------
+def Object.inherited(c)
+	puts "class #{c} < #{self}"
+end
+module Final
+	def self.included(c)
+		c.instance_eval do
+			def inherited(sub)
+				raise Exception, "ERROR: cannot create subclass #{sub} for final class #{self}"
+			end
+		end
+	end
+
+	def self.extended(o)
+	end
+end
+
+def String.method_added(name)
+	puts "Method #{name} has been successfully added to class #{self}"
+end
+def String.singleton_method_added(name)
+	puts "Singleton method #{name} has been successfully added to class #{self}"
+end
+def String.method_removed(name)
+	puts "Method #{name} has been successfully removed from class #{self}"
+end
+def String.method_undefined(name)
+	puts "Method #{name} has been successfully undefined in class #{self}"
+end
+#----------------------------------------------------
+module Strict
+	def singleton_method_added(name)
+		STDERR.puts "ERROR: singleton method #{name} has been added to #{self}"
+		eigenclass = class << self; self; end
+		eigenclass.class_eval { remove_method name }
+	end
+
+	def singleton_method_removed(name)
+		puts "ERROR: singleton method #{name} has been removed from #{self}"
+	end
+
+	def singleton_method_undefined(name)
+		puts "ERROR: singleton method #{name} has been undefined in #{self}"
+	end
+end
+#----------------------------------------------------
+STDERR.puts "#{__method__} in #{__FILE__}:#{__LINE__}: incorrect data"
+SCRIPT_LINES__ = {__FILE__ => File.readlines(__FILE__)}
+SCRIPT_LINES__[__FILE__][__LINE__-1]
+trace_var(:$SAFE) {|v|
+	puts "Value of $SAFE=#{v} from #{caller[1]}"
+}
+untrace_var(:$SAFE)
+#----------------------------------------------------
+ObjectSpace.each_object(Class) {|c| puts c}
+#ObjectSpace._id2ref(id)
+#ObjectSpace.define_finalizer
+#ObjectSpace.undefine_finalizer
+#ObjectSpace.garbage_collect == GC.start / GC.enable / GC.disable
+
+# require './afterevery'
+# # 1.upto(5) {|x| print x}
+# 1.upto(5) do |i|
+# 	after i do
+# 		puts i
+# 	end
+# end	
+# sleep(5)
+# every 1, 6 do |count|
+# 	puts count
+# 	break if count == 10
+# 	count += 1
+# end
+# sleep(6)
+#----------------------------------------------------
+
+
+
