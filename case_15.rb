@@ -617,7 +617,55 @@ class Module
 	private :attributes, :class_attrs
 end
 #----------------------------------------------------
+s = ""
+s.each_byte {|b| print b, " "} # s.bytes.to_a
+s.each_line {|s| print s.chomp} # s.lines.to_a
+s.each_char {|c| print c, " "} # s.chars.to_a
+0.upto(s.length-1) {|n| print s[n, 1], " "}
 
+"one".to_sym
+"one".intern
+"a".upto("e") {|c| print c}
+"".dump # "".inspect
+"bead".tr_s("aeiou", " ")
+"".sum(8)
+"".crypt("ab")
+
+"".count('aeiou')
+"".delete('aeiou')
+"".squeeze('a-z')
+"".count('a-z', '^aeiou')
+"".delete('a-z', '^aeiou')
+
+'%d blind %s' % [1, "animal"]
+
+'%5s' % '<<<'
+'%-5s' % '>>>'
+'%05d' % 123
+'%.6e' % 123.456
+'%.4g' % 123.456
+'%6.4s' % 'ruby'
+"%2$s:%3$d: %1$s" % ['Syntax Error', 'test.rb', 20]
+#----------------------------------------------------
+a = [1, 2, 3, 4, 5]
+b = a.pack('i5')
+c = b.unpack('i*')
+c == a
+m = 'hello world'
+data = [m.size, m]
+template = 'Sa*'
+b = data.pack(template)
+b.unpack(template)
+#----------------------------------------------------
+Regexp.new("ruby?")
+Regexp.new("ruby?", Regexp::IGNORECASE)
+Regexp.compile(".", Regexp::MULTILINE)
+pattern = "[a-z]+"
+suffix = Regexp.escape("()")
+r = Regexp.new(pattern + suffix)
+Regexp.union("ruby", "perl", "python", "/Java(Script)?")
+Regexp.union("()", "[]", "{}")
+#----------------------------------------------------
 
 
 
