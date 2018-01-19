@@ -666,6 +666,66 @@ r = Regexp.new(pattern + suffix)
 Regexp.union("ruby", "perl", "python", "/Java(Script)?")
 Regexp.union("()", "[]", "{}")
 #----------------------------------------------------
+"hello" =~ /e\w{2}/
+$~.string
+$~.to_s
+$~.pre_match
+$~.post_match # Regexp.last_match
+
+pattern = /(Ruby|Perl)(\s+)(rocks|sucks)!/
+text = "Ruby rocks!"
+pattern =~ text
+data = Regexp.last_match
+data.size
+data.values_at(1, 3)
+data.captures
+data.begin(0)
+data.begin(2)
+data.end(2)
+data.offset(3)
+#----------------------------------------------------
+pattern = /(?<lang>Ruby|Perl) (?<ver>\d(\.\d)+) (?<review>rocks|sucks)!/
+if(pattern =~ "Ruby 1.9.1 rocks!")
+	$~[:lang]
+	$~[:ver]
+	$~["review"]
+	$~.offset(:ver)
+end
+pattern.names
+pattern.named_captures
+pattern.match(text) {|data| handle_data(data)}
+if /(?<lang>Ruby|Perl) (?<ver>\d(\.\d)+) (?<review>rocks|sucks)!/ =~ "Ruby 1.9 rules!"
+	lang
+	ver
+	review
+end
+#----------------------------------------------------
+require 'English'
+$~ #= Regexp.last_match / $LAST_MATCH_INFO
+$& #= Regexp.last_match[0] / $MATCh
+$` #= Regexp.last_match.pre_match / $PREMATCH
+$' #= Regexp.last_match.post_match / $POSTMATCh
+$1 #= Regexp.last_match[1]
+$+ #= Regexp.last_match[-1] / $LAST_PAREN_MATCH
+
+r = "ruby123"
+r.slice!(/\d+/)
+"ruby123"[/([a-z]+)(\d+)/,1]
+
+re = /(?<quote>['"])(?<body>[^'"]*)\k<quote>/
+puts "".gsub(re, '\k<body>')
+
+pattern = /(['"])([^\1]*)\1/
+text.gsub!(pattern) do
+	if ($1 == '"')
+		"'#$2'"
+	else
+		"\"#$2\""
+	end
+end
+#----------------------------------------------------
+
+
 
 
 
