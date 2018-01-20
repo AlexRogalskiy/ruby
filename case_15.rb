@@ -819,7 +819,15 @@ a.permutation(2) {|x| print x}
 a.combination(2) {|x| print x}
 a.product(['a','b'])
 #----------------------------------------------------
-
+h = {:a => 1, :b => 2}
+a = h.to_a
+a.assoc(:a)
+a.assoc(:b).last
+a.rassoc(1)
+a.rassoc(2).first
+a.transpose
+a = [1, 2, 3].zip([:a, :b, :c])
+#----------------------------------------------------
 
 
 
