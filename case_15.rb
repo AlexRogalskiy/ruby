@@ -488,8 +488,9 @@ puts h.one
 #----------------------------------------------------
 String.class_eval { private :reverse }
 # "hello".reverse
-Math.private_class_method *Math.singleton_methods
-Math.public_class_method *Math.singleton_methods
+
+#Math.private_class_method *Math.singleton_methods
+#Math.public_class_method *Math.singleton_methods
 #----------------------------------------------------
 def Object.inherited(c)
 	puts "class #{c} < #{self}"
@@ -724,6 +725,101 @@ text.gsub!(pattern) do
 	end
 end
 #----------------------------------------------------
+class Numeric
+	def milliseconds; self/1000.0; end
+	def seconds; self; end
+	def minutes; self*60; end
+	def hours; self*60*60; end
+	def days; self*60*60*24; end
+	def weeks; self*60*60*24*7; end
+
+	def to_milliseconds; self*1000; end
+	def to_seconds; self; end
+	def to_minutes; self/60.0; end
+	def to_hours; self/(60*60.0); end
+	def to_days; self/(60*60*24.0); end
+	def to_weeks; self/(60*60*24*7.0); end
+end
+#----------------------------------------------------
+(5..7).each {|x| print x}
+(6..7).each_with_index {|x, i| print x, i}
+
+(1..10).each_slice(4) {|x| print x}
+(1..6).each_cons(3) {|x| print x}
+data = [1, 2, 3, 4, 5]
+roots = data.collect {|x| Math.sqrt(x)}
+
+(1..3).zip([4, 5, 6]) {|x| print x.inspect}
+(1..3).zip([4, 5, 6],[7, 8]) {|x| print x}
+(1..3).zip('a'..'c') {|x, y| print x, y}
+
+(1..3).to_a == (1..3).entries
+
+require 'set'
+(1..3).to_set
+
+e = [1..10].to_enum
+e = "test".enum_for(:each_byte)
+e = "test".each_byte
+"Ruby".each_char.max
+iter = "Ruby".each_char
+loop { print iter.next }
+"Ruby".each_char.with_index.each {|c, i| puts "#{i}:#{c}"}
+#----------------------------------------------------
+words = ['carrot', 'beet', 'apple']
+words.sort_by {|x| x.downcase}
+words.sort {|a, b| b<=>a} # a.casecmp(b)
+
+primes = Set[2, 3, 4, 5]
+primes.include? 2
+primes.member? 1
+data = [[1, 2], [0, 1], [7, 8]]
+data.find {|x| x.include? 1}
+data.detect {|x| x.include? 3}
+data.find_index {|x| x.include? 1}
+
+(1..9).select {|x| x%2 == 0}
+(1..9).find_all {|x| x%2 == 1}
+
+langs = %w[java perl python ruby]
+groups = langs.group_by {|lang| lang[0]}
+langs.grep(/^p/) {|x| x.capitalize}
+
+data = [1, 17, 4.0, 3]
+ints = data.grep(Integer)
+small = ints.grep(0..9)
+
+[1, 2, 3, nil, 4].take_while {|x| x}
+[nil, 1, 2].drop_while {|x| x}
+
+sum = (1..5).reduce(:+)
+prod = (1..5).reduce(:*)
+letter = ('a'..'e').reduce("-", :concat)
+
+sum = (1..6).inject {|total, x| total + x}
+max = [1, 3, 4].inject {|m, x| m > x ? m : x}
+
+(-1..10).inject(0) {|num, x| x < 0 ? num + 1 : num}
+%w[pea queue are].inject(0) {|total, word| total + word.length}
+#----------------------------------------------------
+count = Array.new(3) {|i| i+1}
+a = Array.new(3) {'b'}
+# [1, 2, 3].nitems {|x| x>2}
+# a.choice
+a.values_at(0...2, 1..3)
+a.delete_if {|x| x%2 == 1}
+a.reject! {|x| x%2 == 0}
+#----------------------------------------------------
+a.index {|c| c =~ /[aeiou]/}
+a.compact
+a.fill(2..4) {'b'}
+a.replace([1,2,3])
+
+a.permutation(2) {|x| print x}
+a.combination(2) {|x| print x}
+a.product(['a','b'])
+#----------------------------------------------------
+
 
 
 
