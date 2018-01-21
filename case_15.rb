@@ -828,6 +828,71 @@ a.rassoc(2).first
 a.transpose
 a = [1, 2, 3].zip([:a, :b, :c])
 #----------------------------------------------------
+Dir.foreach(".") {|f| print f}
+Dir['*/*.rb']
+file = File.basename('.')
+File.dirname('.')
+s = File.stat('.')
+puts s.directory?
+puts File.ftype('.')
+File.executable?('.')
+File.world_readable?('.')
+File.world_writable?('.')
+File.zero?('.')
+File.size?('.')
+
+test ?e, '.'
+test ?s, '.'
+test ?r, '.'
+test ?w, '.'
+f = g = '.'
+test ?-, f, g
+test ?<, f, g
+test ?>, f, g
+test ?=, f, g
+
+f = 'testing'
+ff = File.open(f, "a:utf-8") {}
+ff = File.open(f, "r:binary") {}
+ff = File.open(f, "r:iso8859-1:utf-8") {}
+# ff.set_encoding(Encoding::UTF-8)
+
+atime = mtime = Time.new
+File.truncate(f, 0)
+File.utime(atime, mtime, f)
+File.chmod(0600, f)
+File.delete('testing')
+
+# Dir mkdir("temp")
+# File.open("temp/f", "w") {}
+# File.delete(*Dir["temp/*"])
+# Dir.rmdir("temp")
+
+# File.open("log.txt", "a") do |log|
+# 	log.puts("INFO: Logging a message")
+# end
+
+# uptime = open("|uptime") {|f| f.gets}
+require "open-uri"
+f = open("http://www.google.com/")
+webpage = f.read
+f.close
+
+require "stringio"
+input = StringIO.open("")
+buffer = ""
+output = StringIO.open(buffer, "w")
+
+# lines = ARGF.readlines
+# line = DATA.readlines
+# print l while l = DATA.gets
+# DATA.each {|line| print line}
+# DATA.each_line
+# DATA.lines
+# print while DATA.gets
+# ARGF == $<
+# ARGV == $*
+#----------------------------------------------------
 
 
 
