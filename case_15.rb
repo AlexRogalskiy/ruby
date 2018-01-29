@@ -892,14 +892,124 @@ output = StringIO.open(buffer, "w")
 # print while DATA.gets
 # ARGF == $<
 # ARGV == $*
-#----------------------------------------------------
-#----------------------------------------------------
-#----------------------------------------------------
-#----------------------------------------------------
-#----------------------------------------------------
-#----------------------------------------------------
 
+text = File.read("license")
+f = File.open("license")
+test = f.read
+f.close
+#----------------------------------------------------
+# DATA.lineno = 0
+# DATA.readline
+# $.
+data = IO.read("license")
+data = IO.read("license", 4, 2)
+words = IO.readlines("license")
+words = {}
+IO.foreach("license") {|w| words[w] = true}
 
+f = File.open("license", "r:binary")
+c = f.getc
+f.ungetc(c)
+c = f.readchar
+
+f = File.open("license", "r:binary")
+magic = f.read(4)
+exit unless magic == "INTS"
+bytes = f.read
+data = bytes.unpack("i*")
+puts data
+
+o = STDOUT
+o << "x" << "y"
+o.printf fmt,*args
+
+f.seek(10, IO::SEEK_SET)
+f.seek(10, IO::SEEK_CUR)
+f.seek(-10, IO::SEEK_END)
+f.seek(10, IO::SEEK_END)
+f.eof?
+f.closed?
+f.tty?
+pos = f.sysseek(10, IO::SEEK_CUR)
+f.sysseek(0, IO::SEEK_SET)
+f.sysseek(pos, IO::SEEK_SET)
+#----------------------------------------------------
+begin
+	f = File.open("license")
+ensure
+	f.close if f
+end
+#----------------------------------------------------
+require 'socket'
+# ruby file localhost 2000
+#host, port = ARGV
+host = "http://www.google.ru/"
+port = 80
+# s = TCPSocket.open(host, port)
+# while line = s.gets
+# 	puts line.chop
+# end
+# s.close
+
+# TCPSocket.open(host, port) do |t|
+# 	while line = s.gets
+# 		puts line.chop
+# 	end
+# end
+# server = TCPServer.open(2000)
+# loop {
+# 	client = server.accept
+# 	client.puts(Time.noew.ctime)
+# 	clien.close
+# }
+
+# ds = UDPSocket.new
+# ds.connect(host, port)
+# ds.send(request, 0)
+# response, address = ds.recvfrom(1024)
+# puts response
+
+# ds = UDPSocket.new
+# ds.bind(nil, port)
+# loop do
+# 	request, address = ds.recvfrom(1024)
+# 	response = request.upcase
+# 	clientaddr = address[3]
+# 	clientname = address[2]
+# 	clientport = address[1]
+# 	ds.send(response, 0, clientaddr, clientport)
+# 	puts "Connection: from #{clientname} #{clientaddr} #{clientport}"
+# end
+#----------------------------------------------------
+def join_all
+	main = Thread.main
+	current = Thread.current
+	all = Thread.list
+	all.each {|t| t.join unless t == current or t == main}
+end
+# Thread.abort_on_exception = true
+# t = Thread.new do
+# end
+# t.abort_on_exception = true
+
+n = 1
+while n <= 3
+	Thread.new(n) {|x| puts x}
+	n += 1
+end
+1.upto(3) {|n| Thread.new {puts n}}
+
+Thread.current[:progress] = bytes_received
+total = 0
+thread_pool.each {|t| total += t[:progress] if t.key?(:progress)}
+#----------------------------------------------------
+#----------------------------------------------------
+#----------------------------------------------------
+#----------------------------------------------------
+#----------------------------------------------------
+#----------------------------------------------------
+#----------------------------------------------------
+#----------------------------------------------------
 
 
 
