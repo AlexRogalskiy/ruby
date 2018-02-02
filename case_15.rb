@@ -1003,7 +1003,19 @@ Thread.current[:progress] = bytes_received
 total = 0
 thread_pool.each {|t| total += t[:progress] if t.key?(:progress)}
 #----------------------------------------------------
+# .container
+#   %header.sixteen.columns
+#     %h1 SpotFindr
+#     %h3 123 address
+#   %section.eight.columns
+#     %h2.price 0
+#     %p safsaf
+#   %section.eight.columns
+#     %h2.price 0
+#     %p safsad
 #----------------------------------------------------
+# groups = ThreadGroup.new
+# 3.times {|n| group.add(Thread.new {do_task(n)})}
 #----------------------------------------------------
 #----------------------------------------------------
 #----------------------------------------------------
